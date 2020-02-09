@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: tebofy-api
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: tebofy-api
-        image: registry.gitlab.com/tebofy/tebofy-web-api:5289f708f598a05e91dbfe76480282de50b2dca2
+        image: registry.gitlab.com/tebofy/tebofy-web-api:0f65436ad5b1163f85d998839a7818f4f40b123b
         imagePullPolicy: Always
         ports:
         - containerPort: 3400
@@ -25,6 +25,8 @@ spec:
           protocol: TCP
       imagePullSecrets:
       - name: gitlab-auth
+
+---
 
 # ------------------- Service ------------------- #
 apiVersion: v1
@@ -42,4 +44,4 @@ spec:
     targetPort: 3400
   selector:
     app: tebofy-api
-  type: NodePort
+  type: LoadBalancer
