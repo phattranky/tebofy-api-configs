@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: tebofy-cloud-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: tebofy.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: tebofy-web-ui
+          servicePort: 3200
