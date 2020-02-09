@@ -1,0 +1,45 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: tebofy-api
+  namespace: default
+  labels:
+    app: tebofy-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tebofy-api
+  template:
+    metadata:
+      labels:
+        app: tebofy-api
+    spec:
+      containers:
+      - name: tebofy-api
+        image: registry.gitlab.com/tebofy/tebofy-web-api:0f65436ad5b1163f85d998839a7818f4f40b123b
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: web
+          protocol: TCP
+      imagePullSecrets:
+      - name: gitlab-auth
+
+# ------------------- Service ------------------- #
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    app: cicd
+  name: cicd
+  namespace: default
+spec:
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: cicd
+  type: NodePort
