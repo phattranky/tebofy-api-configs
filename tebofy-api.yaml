@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tebofy-api
+  namespace: default
+  labels:
+    app: tebofy-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tebofy-api
+  template:
+    metadata:
+      labels:
+        app: tebofy-api
+    spec:
+      containers:
+      - name: tebofy-api
+        image: registry.gitlab.com/tebofy/tebofy-web-api:dcff3689809932ade99189677d72378a7f59d14e
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3400
+          name: web
+          protocol: TCP
+      imagePullSecrets:
+      - name: gitlab-auth
+
+---
+
+# ------------------- Service ------------------- #
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  labels:
+    app: tebofy-api
+  name: tebofy-api
+  namespace: default
+spec:
+  ports:
+  - protocol: TCP
+    port: 3400
+    targetPort: 3400
+  selector:
+    app: tebofy-api
+  type: LoadBalancer

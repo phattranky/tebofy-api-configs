@@ -13,3 +13,17 @@ spec:
         backend:
           serviceName: tebofy-web-ui
           servicePort: 3200
+  - host: api.tebofy.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: tebofy-api
+          servicePort: 3400
+  - host: mongo.tebofy.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: mongo
+          servicePort: 27017
