@@ -1,0 +1,38 @@
+# Health Check
+apiVersion: v1
+  kind: Pod
+  metadata:
+    labels:
+      test: liveness
+    name: liveness-http
+  spec:
+    containers:
+    - name: tebofy-api
+      image: k8s.gcr.io/liveness
+      ports:
+      - name: liveness-port
+        containerPort: 3400
+        hostPort: 3400
+      
+      livenessProbe:
+        httpGet:
+          path: /api/health-check
+          port: liveness-port
+        failureThreshold: 1
+        periodSeconds: 10
+        initialDelaySeconds: 120
+
+      readinessProbe:
+        httpGet:
+          path: /api/health-check
+          port: liveness-port
+        failureThreshold: 1
+        periodSeconds: 10
+        initialDelaySeconds: 120
+      
+      startupProbe:
+        httpGet:
+          path: /api/health-check
+          port: liveness-port
+        failureThreshold: 30
+        periodSeconds: 10
