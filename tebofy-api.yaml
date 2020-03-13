@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: tebofy-api
-        image: registry.gitlab.com/tebofy/tebofy-web-api:dcff3689809932ade99189677d72378a7f59d14e
+        image: registry.gitlab.com/tebofy/tebofy-web-api:d1ea6555a512bdd463560e8e506fa0457e10e341
         imagePullPolicy: Always
         ports:
         - containerPort: 3400
