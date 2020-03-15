@@ -75,8 +75,8 @@ spec:
       template:
         spec:
           containers:
-          - name: app
-            image: tebofy-api-my-daily-cron-container
+          - name: tebofy-api-my-daily-cron-container
+            image: appropriate/curl
             env:
             - name: URL
               value: "http://tebofy-api:3400/task/push-my-daily-notification"
