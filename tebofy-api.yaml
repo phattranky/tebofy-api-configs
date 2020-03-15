@@ -75,10 +75,12 @@ spec:
       template:
         spec:
           containers:
-          - name: tebofy-api-my-daily-cron-container
-            image: buildpack-deps:curl
-            args:
-            - /bin/sh
-            - -ec
-            - curl -H "x-token: GbPEL66WcfkE4gn9jCHpaffK2DTdkT9R" http://tebofy-api:3400/task/push-my-daily-notification
-          restartPolicy: Never
+          - name: app
+            image: tebofy-api-my-daily-cron-container
+            env:
+            - name: URL
+              value: "http://tebofy-api:3400/task/push-my-daily-notification"
+            - name: XTOKEN
+              value: "GbPEL66WcfkE4gn9jCHpaffK2DTdkT9R"
+            args: ["-vk", "-H", "x-token: $(XTOKEN)", "$(URL)"]
+          restartPolicy: OnFailure
