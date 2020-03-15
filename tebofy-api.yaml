@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: tebofy-api
-        image: registry.gitlab.com/tebofy/tebofy-web-api:d1ea6555a512bdd463560e8e506fa0457e10e341
+        image: registry.gitlab.com/tebofy/tebofy-web-api:e2021ccf7b106a225478702e0f12a0cebaa5c267
         imagePullPolicy: Always
         ports:
         - containerPort: 3400
@@ -59,3 +59,26 @@ spec:
   selector:
     app: tebofy-api
 
+# --- Cron -- #
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: tebofy-api-my-daily-cron
+spec:
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: tebofy-api-my-daily-cron-container
+            image: buildpack-deps:curl
+            args:
+            - /bin/sh
+            - -ec
+            - curl -H "x-token: GbPEL66WcfkE4gn9jCHpaffK2DTdkT9R" http://tebofy-api:3400/task/push-my-daily-notification
+          restartPolicy: Never
